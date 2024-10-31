@@ -1,0 +1,72 @@
+<form  id="form" data-url="/users/edit/{{user.id}}" >
+    <div>
+        <h1>Editando dados</h1>
+    </div>
+    <div>
+        <input id="name" name="name" type="text" value="{{user.name}}">
+    </div>
+    <div>
+        <input id="occupation" name="occupation" type="text" value="{{user.occupation}}">
+    </div>
+        
+    </div>
+        <input  id="newsLetter" name="newsLetter" type="text" value="{{user.newsLetter}}">
+    </div>
+    <div><button type="submit">Salvar</button></div>
+</form>
+
+<form action="/adress/create" method="post" id="form2">
+    <div>
+        <input type="hidden" value="{{user.id}}" name="UserId" id="UserId">
+    </div>
+    <div>
+        <input type="text" name="street" id="street" placeholder="Digite a Rua">
+    </div>
+    <div>
+        <input type="text" name="city" id="city" placeholder="Digite a Cidade">
+    </div>
+      <div>
+        <input type="text" name="number" id="numer" placeholder="Digite o Numero">
+    </div>
+     <div>
+        <button type="submit">Salvar</button>
+    </div>
+</form>
+<div>
+    <h1>Endereços</h1>
+    <ul>
+    {{#each user.Adresses}}
+       <li>ID: {{this.id}} - {{this.street}} - {{this.number}} - {{this.city}}</li>
+    {{/each}}
+    </ul>
+</div>
+<script>
+    document.getElementById('form').addEventListener('submit', function(e){
+        e.preventDefault();
+        const url = this.getAttribute('data-url');
+
+        console.log(url);
+        const name = document.getElementById('name').value;
+        const occupation = document.getElementById('occupation').value;
+        const newsLetter = document.getElementById('newsLetter').value;
+        const userEdited = {
+            name, occupation, newsLetter
+        }
+        fetch(url, {
+            method:'PUT',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(userEdited)
+        }).then(function(res){
+            if(res.ok){
+                alert(`Usuario atualizado`);
+                window.location.href = "/users";
+            }
+        }).catch(function(err){
+            if(err){
+                console.log("Houve um erro na operação", err);
+            }
+        })
+    })
+</script>

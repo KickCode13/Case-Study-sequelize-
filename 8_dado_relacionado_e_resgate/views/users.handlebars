@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{#each users}}
+    
+    <p>ID: {{id}} Nome:{{name}}  Ocupação:{{occupation}} Noticias automaticas: {{newsLetter}} <a href="/users/{{id}}">Ver detalhes</a> <button data-url="/users/del/{{id}}" class="del-link">Del</button> <button data-url="/users/edit/{{id}}" class="edit-link">Edit</button></p> 
+  
+      
+    {{/each}}
+    <script>
+        document.querySelectorAll('.del-link').forEach(function(btnDel){
+            btnDel.addEventListener('click', function(e){
+                e.preventDefault()
+                const url = this.getAttribute('data-url');
+                const paragrafh = this.closest('p');
+                console.log(url);
+                fetch(url, {
+                    method:'DELETE',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
+
+                }).then(function(res){
+                    if(res.ok){
+                        alert('Usuario deletado');
+                        paragrafh.remove();
+                    }
+                }).catch(function(err){
+                    console.log("Erro na operação")
+                })
+            })
+        })
+        document.querySelectorAll('.edit-link').forEach(function(btnEdit){
+            btnEdit.addEventListener('click', function(e){
+                e.preventDefault();
+                const url = this.getAttribute('data-url');
+                window.location.href = url;
+                
+            })
+        })
+    </script>
+</body>
+</html>
