@@ -1,0 +1,47 @@
+<form  id="form" data-url="/users/edit/{{user.id}}" >
+    <div>
+        <h1>Editando dados</h1>
+    </div>
+    <div>
+        <input id="name" name="name" type="text" value="{{user.name}}">
+    </div>
+    <div>
+        <input id="occupation" name="occupation" type="text" value="{{user.occupation}}">
+    </div>
+        
+    </div>
+        <input  id="newsLetter" name="newsLetter" type="text" value="{{user.newsLetter}}">
+    </div>
+    <div><button type="submit">Salvar</button></div>
+</form>
+
+<script>
+    document.getElementById('form').addEventListener('submit', function(e){
+        e.preventDefault();
+        const url = this.getAttribute('data-url');
+
+        console.log(url);
+        const name = document.getElementById('name').value;
+        const occupation = document.getElementById('occupation').value;
+        const newsLetter = document.getElementById('newsLetter').value;
+        const userEdited = {
+            name, occupation, newsLetter
+        }
+        fetch(url, {
+            method:'PUT',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(userEdited)
+        }).then(function(res){
+            if(res.ok){
+                alert(`Usuario atualizado`);
+                window.location.href = "/users";
+            }
+        }).catch(function(err){
+            if(err){
+                console.log("Houve um erro na operação", err);
+            }
+        })
+    })
+</script>
