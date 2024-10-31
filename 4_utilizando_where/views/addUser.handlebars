@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <form id="form" data-url="/cadastrar">
+            <div class="form-label-input">
+                <label for="nameName">Nome</label>
+                <input type="text" placeholder="Digite seu nome" id="nameId" name="nameName">
+            </div>
+            <div class="form-label-input">
+                <label for="occupationName">Ocupação</label>
+                <input type="text" id="occupationId" name="occupationName" placeholder="Digite sua ocupação">
+            </div>
+            <div  style="text-align: center;width: 10%; height: 50px;">
+                 <label for="newsLetterName">Enviar promoções?</label>
+                <input type="checkbox" id="newsLetterId" name="newsLetterName" checked>
+            </div>
+            <div>
+                <button type="submit" name="btnName" id="btnId">Cadastrar</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('btnId').addEventListener('click', function(e){
+            e.preventDefault();
+            console.log("Clicou");
+            const url = document.getElementById('form').getAttribute('data-url');
+            console.log(url);
+
+            //pegando dados do usuario e transformando um um objeto
+            const name  = document.getElementById('nameId').value;
+            const occupation  = document.getElementById('occupationId').value;
+            const newsLetter = document.getElementById('newsLetterId').checked;
+            console.log(newsLetter);
+            const user = {
+                name,
+                occupation, 
+                newsLetter
+            }
+            console.log(user);
+            fetch(url, {
+                method:'POST',
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(user)
+            })
+            .then(function(res){
+                if(res.ok){
+                    setTimeout(function(){
+                        alert(`${name} cadastrado com sucesso!`)
+                    })
+                }
+            })
+        })
+    </script>
+</body>
+</html>
